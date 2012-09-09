@@ -4,7 +4,7 @@ require 'rubygems'
 require 'faraday'
 require 'rest-client'
 require 'json'
-require './ninja-blocks.rb'
+require 'ninja_blocks'
 require 'chronic'
 
 TOKEN = 'YOURTOKEN'
