@@ -8,9 +8,9 @@ Gem::Specification.new do |gem|
   gem.version       = NinjaBlocks::VERSION
   gem.authors       = ["Marcus Schappi"]
   gem.email         = ["marcus@schappi.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.description   = "A simple library for talking to the Ninja Blocks Platform."
+  gem.summary       = "Ninja Blocks!"
+  gem.homepage      = "http://ninjablocks.com"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
