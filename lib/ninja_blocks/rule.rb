@@ -5,7 +5,6 @@ module NinjaBlocks
       get('https://api.ninja.is/rest/v0/rule')
     end
 
-   
   end
 end
 
