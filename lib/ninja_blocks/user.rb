@@ -4,10 +4,6 @@ module NinjaBlocks
       get('https://api.ninja.is/rest/v0/user')
     end
 
-    def token
-      ::NinjaBlcoks.token
-    end
-
     def stream
       get('https://api.ninja.is/rest/v0/user/stream')
     end
