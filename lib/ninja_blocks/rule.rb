@@ -19,7 +19,7 @@ module NinjaBlocks
       put("https://api.ninja.is/rest/v0/rule/#{rid}")
     end
     
-    def delete(rid)
+    def destroy(rid)
       # delete a rule
       delete("https://api.ninja.is/rest/v0/rule/#{rid}")
     end
