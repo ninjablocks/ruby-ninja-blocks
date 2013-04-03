@@ -1,7 +1,7 @@
 module NinjaBlocks
   class Device < Base
 
-    def list(filter_by)
+    def list(*filter_by)
       
       hash_of_response = get("https://api.ninja.is/rest/v0/devices")
 
@@ -23,6 +23,7 @@ module NinjaBlocks
           device_hash["guid"] = d[0]
           device_hash = device_hash.merge(d[1]) 
           devices << device_hash
+          devices = devices.sort_by { |k| k["device_type"] }
         end
         
       end
@@ -47,6 +48,24 @@ module NinjaBlocks
         puts t
       end
     end
+    
+    def available_devices
+      hash_of_response = get("https://api.ninja.is/rest/v0/devices")
+
+      devices_types = []
+      
+      hash_of_response["data"].each do |d|
+        device_hash = {}
+        device_hash["guid"] = d[0]
+        device_hash = device_hash.merge(d[1]) 
+        devices_types << device_hash['device_type'] unless device_hash['device_type'].nil?
+        devices_types = devices_types.uniq
+      end
+      
+      devices_types.each do |t|
+        puts t
+      end
+    end   
 
     def actuate(guid, da)
       json = JSON.dump('DA'=> dsa)
@@ -63,6 +82,8 @@ module NinjaBlocks
     end
 
     def data(guid, from, to)
+      from = Chronic.parse(from).to_i
+      to = Chronic.parse(to).to_i
       get("https://api.ninja.is/rest/v0/device/#{guid}/data?from=#{from}&to=#{to}")
     end
 
