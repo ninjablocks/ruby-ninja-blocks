@@ -26,8 +26,10 @@ module NinjaBlocks
       delete("https://api.ninja.is/rest/v0/rule/#{rid}")
     end
     
-    def suspend
+    def suspend(rid)
       # suspend a rule
+      post("https://api.ninja.is/rest/v0/rule/#{rid}/suspend")
+      
     end
     
     def unsuspend
