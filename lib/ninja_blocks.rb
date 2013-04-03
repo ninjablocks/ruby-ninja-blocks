@@ -12,9 +12,7 @@ module NinjaBlocks
   require 'ninja_blocks/device'
   require 'ninja_blocks/user'
   require 'ninja_blocks/rule'
-  require 'ninja_blocks/rule_builder'
-  
-  
+
   def self.token
     @token
   end
