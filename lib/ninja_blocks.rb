@@ -1,3 +1,11 @@
+# external dependencies
+
+require 'rubygems'
+require 'faraday'
+require 'rest-client'
+require 'json'
+require 'chronic'
+
 require "ninja_blocks/version"
 module NinjaBlocks
   require 'ninja_blocks/abstruct'
