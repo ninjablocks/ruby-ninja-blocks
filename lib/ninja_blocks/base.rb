@@ -29,6 +29,7 @@ module NinjaBlocks
       response = connection.send(method,"#{url}?user_access_token=#{self.token}")
       JSON.parse(response.body)
     end
+    
   end
 end
 
