@@ -6,7 +6,7 @@ module NinjaBlocks
     end
 
 
-    def create(json)
+    def create(rule, json)
       # create rule
       post("https://api.ninja.is/rest/v0/rule", json)
     end
@@ -18,10 +18,10 @@ module NinjaBlocks
     
     def update(rid, json)
       # update a rule
-      put("https://api.ninja.is/rest/v0/rule/#{rid}", json)
+      get("https://api.ninja.is/rest/v0/rule/#{rid}")
     end
     
-    def delete
+    def delete(rid)
       # delete a rule
       delete("https://api.ninja.is/rest/v0/rule/#{rid}")
     end
