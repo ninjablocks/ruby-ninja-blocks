@@ -11,13 +11,12 @@ module NinjaBlocks
     end
     
     def get(rid)
-      # get rule
       get("https://api.ninja.is/rest/v0/rule/#{rid}")
     end
     
     def update(rid, json)
       # update a rule
-      get("https://api.ninja.is/rest/v0/rule/#{rid}")
+      put("https://api.ninja.is/rest/v0/rule/#{rid}")
     end
     
     def delete(rid)
