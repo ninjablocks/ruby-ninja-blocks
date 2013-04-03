@@ -7,7 +7,9 @@ module NinjaBlocks
 
       devices = []
       
-      unless filter_by.nil?
+      filter_by = filter_by[0] if filter_by.kind_of?(Array)
+
+      unless filter_by[:device_type].empty?
 
         hash_of_response["data"].each do |d|
           device_hash = {}
@@ -23,6 +25,7 @@ module NinjaBlocks
           device_hash["guid"] = d[0]
           device_hash = device_hash.merge(d[1]) 
           devices << device_hash
+          devices = devices.reject { |d| d['device_type'] == nil }
           devices = devices.sort_by { |k| k["device_type"] }
         end
         
