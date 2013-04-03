@@ -5,7 +5,6 @@ module NinjaBlocks
       get('https://api.ninja.is/rest/v0/rule')
     end
 
-
     def create(rule, json)
       # create rule
       post("https://api.ninja.is/rest/v0/rule", json)
@@ -35,7 +34,6 @@ module NinjaBlocks
     def unsuspend(rid)
       # unsuspend a rule
       delete("https://api.ninja.is/rest/v0/rule/#{rid}/suspend")
-      
     end
 
   end
