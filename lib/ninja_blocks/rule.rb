@@ -10,7 +10,7 @@ module NinjaBlocks
       post("https://api.ninja.is/rest/v0/rule", json)
     end
     
-    def get(rid)
+    def fetch(rid)
       get("https://api.ninja.is/rest/v0/rule/#{rid}")
     end
     
