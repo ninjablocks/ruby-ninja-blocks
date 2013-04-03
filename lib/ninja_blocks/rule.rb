@@ -6,8 +6,9 @@ module NinjaBlocks
     end
 
 
-    def create
+    def create(rule, json)
       # create rule
+      post("https://api.ninja.is/rest/v0/rule", json)
     end
     
     def get
