@@ -1,5 +1,5 @@
 module NinjaBlocks
-  class Device <Abstruct
+  class Device < Base
 
     def list
       hash_of_response = get("https://api.ninja.is/rest/v0/devices")

@@ -1,5 +1,5 @@
 module NinjaBlocks
-  class Rule < Abstruct
+  class Rule < Base
     
     def list
       get('https://api.ninja.is/rest/v0/rule')

@@ -1,5 +1,5 @@
 module NinjaBlocks
-  class User < Base
+  class RuleBuild < Base
     def info
       get('https://api.ninja.is/rest/v0/user')
     end
