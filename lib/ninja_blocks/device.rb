@@ -85,9 +85,11 @@ module NinjaBlocks
     end
 
     def data(guid, from, to)
-      from = Chronic.parse(from).to_i
-      to = Chronic.parse(to).to_i
-      get("https://api.ninja.is/rest/v0/device/#{guid}/data?from=#{from}&to=#{to}")
+      
+      from = (Chronic.parse(from).utc.to_i) *1000
+      to = (Chronic.parse(to).utc.to_i) *1000 
+      
+      get("https://api.ninja.is/rest/v0/device/#{guid}/data", "from=#{from}&to=#{to}")
     end
 
     def last_heartbeat(guid)

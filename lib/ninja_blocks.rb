@@ -5,6 +5,7 @@ require 'faraday'
 require 'rest-client'
 require 'json'
 require 'chronic'
+require 'active_support/time_with_zone'
 
 require "ninja_blocks/version"
 module NinjaBlocks

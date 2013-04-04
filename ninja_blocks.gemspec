@@ -20,6 +20,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'faraday'
   gem.add_dependency 'rest-client'
   gem.add_dependency 'json'
+  gem.add_dependency 'active_support'
   gem.add_dependency 'chronic'
   
    
