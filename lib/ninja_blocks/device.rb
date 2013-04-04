@@ -6,10 +6,10 @@ module NinjaBlocks
       hash_of_response = get("https://api.ninja.is/rest/v0/devices")
 
       devices = []
-      
-      filter_by = filter_by[0] if filter_by.kind_of?(Array)
-
-      unless filter_by[:device_type].empty?
+      unless filter_by.nil?
+        filter_by = filter_by[0] if filter_by.kind_of?(Array)
+      end
+      unless filter_by.nil? || filter_by[:device_type].empty?
 
         hash_of_response["data"].each do |d|
           device_hash = {}
