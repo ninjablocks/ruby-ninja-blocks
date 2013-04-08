@@ -3,15 +3,15 @@ module NinjaBlocks
     def get(url,options={})
       execute(:get,url,options)
     end
-    def put(url)
-      execute(:put,url)
+    def put(url,options={})
+      execute(url, json)
     end
-    def post(url)
-      execute(:post,url)
+    def post(url,options={})
+      execute(:post,url,options)
     end
 
-    def delete(url)
-      execute(:delete,url)
+    def delete(url,options={})
+      execute(:delete,url,options)
     end
 
     def connection
@@ -33,6 +33,10 @@ module NinjaBlocks
         response = connection.send(method,"#{url}?user_access_token=#{self.token}")
       end
       JSON.parse(response.body)
+    end
+    #ugly hack, but I'm too tired to think
+    def put_json(url, json)
+       response = connection.send(:put, "#{url}?user_access_token=#{self.token}", json)
     end
     
   end

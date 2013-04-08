@@ -71,8 +71,8 @@ module NinjaBlocks
     end   
 
     def actuate(guid, da)
-      json = JSON.dump('DA'=> dsa)
-      put("https://api.ninja.is/rest/v0/device/#{guid}", json)
+      json = JSON.dump('DA'=> da)
+      put_json("https://api.ninja.is/rest/v0/device/#{guid}", json)
     end
 
     def subscribe(guid, url)
