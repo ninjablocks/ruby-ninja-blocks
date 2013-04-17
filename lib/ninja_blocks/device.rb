@@ -6,6 +6,9 @@ module NinjaBlocks
       hash_of_response = get("https://api.ninja.is/rest/v0/devices")
 
       devices = []
+
+      
+
       unless filter_by.nil?
         filter_by = filter_by[0] if filter_by.kind_of?(Array)
       end
@@ -33,6 +36,7 @@ module NinjaBlocks
         
       devices
     end
+
 
     def available_types
       hash_of_response = get("https://api.ninja.is/rest/v0/devices")
@@ -73,6 +77,12 @@ module NinjaBlocks
     def actuate(guid, da)
       json = JSON.dump('DA'=> da)
       put_json("https://api.ninja.is/rest/v0/device/#{guid}", json)
+    end
+
+    def actuate_local(local_ip, guid, da)
+      json = JSON.dump('DA'=> "#{da}")
+      puts "http://#{local_ip}:8000/rest/v0/device/#{guid}"
+      put_json("http://#{local_ip}:8000/rest/v0/device/#{guid}", json)
     end
 
     def subscribe(guid, url)

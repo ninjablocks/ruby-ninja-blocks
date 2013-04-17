@@ -36,9 +36,12 @@ module NinjaBlocks
     end
     #ugly hack, but I'm too tired to think
     def put_json(url, json)
+       puts url
+       puts json
        response = connection.send(:put, "#{url}?user_access_token=#{self.token}", json)
+       puts response
     end
-    
+  
   end
 end
 
