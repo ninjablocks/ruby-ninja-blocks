@@ -2,37 +2,36 @@ module NinjaBlocks
   class Rule < Base
     
     def list
-      get('https://api.ninja.is/rest/v0/rule')
+      get('/rule')
     end
 
     def create(rule, json)
       # create rule
-      post("https://api.ninja.is/rest/v0/rule", json)
+      post("/rule", json)
     end
     
     def fetch(rid)
-      get("https://api.ninja.is/rest/v0/rule/#{rid}")
+      get("/rule/#{rid}")
     end
     
     def update(rid, json)
       # update a rule
-      put("https://api.ninja.is/rest/v0/rule/#{rid}")
+      put("/rule/#{rid}")
     end
     
     def destroy(rid)
       # delete a rule
-      delete("https://api.ninja.is/rest/v0/rule/#{rid}")
+      delete("/rule/#{rid}")
     end
     
     def suspend(rid)
       # suspend a rule
-      post("https://api.ninja.is/rest/v0/rule/#{rid}/suspend")
-      
+      post("/rule/#{rid}/suspend")
     end
     
     def unsuspend(rid)
       # unsuspend a rule
-      delete("https://api.ninja.is/rest/v0/rule/#{rid}/suspend")
+      delete("/rule/#{rid}/suspend")
     end
 
   end

@@ -1,18 +1,26 @@
-module NinjaBlocks 
+module NinjaBlocks
+  
+  BASE_URL = "https://api.ninja.is/rest/v0"
+  
   class Base
+
     def get(url,options={})
-      execute(:get,url,options)
-    end
-    def put(url,options={})
-      execute(url, json)
-    end
-    def post(url,options={})
-      execute(:post,url,options)
+      execute(:get, url, options)
     end
 
-    def delete(url,options={})
-      execute(:delete,url,options)
+    def delete(url, options={})
+      execute(:delete, url, options)
     end
+
+    
+    def put(url, body, options={})
+      execute_data(:put, url, body, options)
+    end
+
+    def post(url, body, options={})
+      execute_data(:post, url, body, options)
+    end
+
 
     def connection
       @connection = Faraday.new(:url => 'https://api.ninja.is')
@@ -24,24 +32,37 @@ module NinjaBlocks
     def token
       @token || NinjaBlocks.token
     end
-    
-    def execute(method,url,options={})
+        
+    protected
 
-      unless options.empty?
-        response = connection.send(method,"#{url}?#{options}&user_access_token=#{self.token}")
-      else
-        response = connection.send(method,"#{url}?user_access_token=#{self.token}")
-      end
+    def execute(method, url, options={})
+      response = connection.send(method, build_url(url, options))
       JSON.parse(response.body)
     end
-    #ugly hack, but I'm too tired to think
-    def put_json(url, json)
-       puts url
-       puts json
-       response = connection.send(:put, "#{url}?user_access_token=#{self.token}", json)
-       puts response
+    
+    def execute_data(method, url, body, options={})
+      response = connection.send(method, build_url(url, options), body)
+      JSON.parse(response.body)
     end
-  
+    
+    def build_url(url, params)
+      url = "#{BASE_URL}#{url}" unless url.start_with?('http')
+      url = Addressable::URI.parse(url)
+      params[:user_access_token] = self.token
+      url.query_values = params
+      url.to_s
+    end
+    
+    # Takes a (Chronic-parseable) string, an integer (presumed to be a UNIX
+    # timestamp), or a Time, and turns it into a timestamp suitable for
+    # inclusion in an API URL.
+    def interpret_date(date)
+      d = Chronic::parse(date) if date.is_a?(String)
+      d = Time.at(date) if date.is_a?(Fixnum)
+      
+      d.utc.to_i * 1000
+    end
+
   end
 end
 

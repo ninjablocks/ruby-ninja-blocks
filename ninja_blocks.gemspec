@@ -22,7 +22,6 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'json'
   gem.add_dependency 'active_support', '3.0.0'
   gem.add_dependency 'chronic'
-
-
+  gem.add_dependency 'addressable'
 
 end
