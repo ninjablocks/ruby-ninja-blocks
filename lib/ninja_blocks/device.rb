@@ -3,43 +3,28 @@ module NinjaBlocks
 
     def list(*filter_by)
       
-      hash_of_response = get("https://api.ninja.is/rest/v0/devices")
-
+      hash_of_response = get("/devices")
       devices = []
-
-      
 
       unless filter_by.nil?
         filter_by = filter_by[0] if filter_by.kind_of?(Array)
       end
-      unless filter_by.nil? || filter_by[:device_type].empty?
-
-        hash_of_response["data"].each do |d|
-          device_hash = {}
-          device_hash["guid"] = d[0]
-          device_hash = device_hash.merge(d[1]) 
-          devices << device_hash
-          devices = devices.reject { |d| d['device_type'] != filter_by[:device_type] }
-        end
       
-      else
-        hash_of_response["data"].each do |d|
-          device_hash = {}
-          device_hash["guid"] = d[0]
-          device_hash = device_hash.merge(d[1]) 
-          devices << device_hash
-          devices = devices.reject { |d| d['device_type'] == nil }
-          devices = devices.sort_by { |k| k["device_type"] }
-        end
-        
+      devices = []
+      hash_of_response['data'].each do |d|
+        device_hash = {}
+        device_hash['guid'] = d[0]
+        device_hash.merge!(d[1])
+        next if (filter_by && d['device_type'] != filter_by[:device_type])
+        devices << device_hash
       end
-        
+
       devices
     end
 
 
     def available_types
-      hash_of_response = get("https://api.ninja.is/rest/v0/devices")
+      hash_of_response = get("/devices")
 
       devices_types = []
       
@@ -57,7 +42,7 @@ module NinjaBlocks
     end
     
     def available_devices
-      hash_of_response = get("https://api.ninja.is/rest/v0/devices")
+      hash_of_response = get("/devices")
 
       devices_types = []
       
@@ -76,34 +61,34 @@ module NinjaBlocks
 
     def actuate(guid, da)
       json = JSON.dump('DA'=> da)
-      put_json("https://api.ninja.is/rest/v0/device/#{guid}", json)
+      put("/device/#{guid}", json)
     end
 
     def actuate_local(local_ip, guid, da)
       json = JSON.dump('DA'=> "#{da}")
-      puts "http://#{local_ip}:8000/rest/v0/device/#{guid}"
-      put_json("http://#{local_ip}:8000/rest/v0/device/#{guid}", json)
+      put("http://#{local_ip}:8000/rest/v0/device/#{guid}", json)
     end
 
     def subscribe(guid, url)
       json = JSON.dump('url'=> url)
-      post("https://api.ninja.is/rest/v0/device/#{guid}/callback", json)
+      post("/device/#{guid}/callback", json)
     end
 
     def unsubscribe(guid)
-      delete("https://api.ninja.is/rest/v0/device/#{guid}/callback")
+      delete("/device/#{guid}/callback")
     end
 
-    def data(guid, from, to)
+    def data(guid, from, to, params={})
+      params.merge({
+        :from => interpret_date(from),
+        :to   => interpret_date(to)
+      })
       
-      from = (Chronic.parse(from).utc.to_i) *1000
-      to = (Chronic.parse(to).utc.to_i) *1000 
-      
-      get("https://api.ninja.is/rest/v0/device/#{guid}/data", "from=#{from}&to=#{to}")
+      get("/device/#{guid}/data", params)
     end
 
     def last_heartbeat(guid)
-      get("https://api.ninja.is/rest/v0/device/#{guid}/heartbeat")
+      get("/device/#{guid}/heartbeat")
     end
 
   end
