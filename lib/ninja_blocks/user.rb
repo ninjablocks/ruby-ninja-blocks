@@ -1,15 +1,15 @@
 module NinjaBlocks
   class User < Base
     def info
-      get('https://api.ninja.is/rest/v0/user')
+      get('/user')
     end
 
     def stream
-      get('https://api.ninja.is/rest/v0/user/stream')
+      get('/user/stream')
     end
 
     def pusher_channel
-      get('https://api.ninja.is/rest/v0/user/pusherchannel')
+      get('/user/pusherchannel')
     end
   end
 end
