@@ -7,7 +7,7 @@ require 'rubygems'
 require 'ninja_blocks'
 require 'pp'
 
-NinjaBlocks::token = '3BW1CL9gphdZweBTlLVKSGP3AiYfSkkaDTyywZnnM'
+NinjaBlocks::token = 'YOUR TOKEN'
 
 # ============
 # = EXAMPLES =
