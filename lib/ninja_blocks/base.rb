@@ -2,8 +2,13 @@ module NinjaBlocks
   
   BASE_URL = "https://api.ninja.is/rest/v0"
   
-  class Base
-
+  module HTTPMethods
+    
+    def self.included(base)
+      # Also add these as class methods.
+      base.extend(HTTPMethods)
+    end
+    
     def get(url,options={})
       execute(:get, url, options)
     end
@@ -11,7 +16,6 @@ module NinjaBlocks
     def delete(url, options={})
       execute(:delete, url, options)
     end
-
     
     def put(url, body, options={})
       execute_data(:put, url, body, options)
@@ -20,21 +24,14 @@ module NinjaBlocks
     def post(url, body, options={})
       execute_data(:post, url, body, options)
     end
-
-
+    
     def connection
       @connection = Faraday.new(:url => 'https://api.ninja.is')
       @connection.headers['accept'] = 'application/json'
       @connection.headers['Content-Type'] = 'application/json'
       @connection
     end
-
-    def token
-      @token || NinjaBlocks.token
-    end
-        
-    protected
-
+    
     def execute(method, url, options={})
       response = connection.send(method, build_url(url, options))
       JSON.parse(response.body)
@@ -62,7 +59,15 @@ module NinjaBlocks
       
       d.utc.to_i * 1000
     end
+    
+    def token
+      @token || NinjaBlocks.token
+    end
 
+  end
+  
+  class Base
+    include HTTPMethods
   end
 end
 
