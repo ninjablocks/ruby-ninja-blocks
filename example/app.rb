@@ -1,41 +1,85 @@
 #!/usr/bin/env ruby
 
+lib = File.expand_path('../../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+
 require 'rubygems'
-require 'faraday'
-require 'rest-client'
-require 'json'
 require 'ninja_blocks'
-require 'chronic'
+require 'pp'
 
-TOKEN = 'YOURTOKEN'
+NinjaBlocks::token = '3BW1CL9gphdZweBTlLVKSGP3AiYfSkkaDTyywZnnM'
 
-device = Device.new
-user = User.new
+# ============
+# = EXAMPLES =
+# ============
 
-# Fetch a user's devices
-puts device.list()
+# Get the most recent temperature reading from all temperature sensors.
+temps = NinjaBlocks::Device.list(:device_type => 'temperature')
+temps.each do |d|
+  puts "#{d.short_name} is #{d.last_heartbeat['DA']}C"
+end
 
-# Send `command` to device `guid`
-puts device.actuate("2712BB000674_0_0_1000", "000000").inspect
+# Execute an RF command by name - turn a "Lamp Off."
+rfs = NinjaBlocks::Device.list(:device_type => 'rf433')
+rfs.each do |rf|
+  lamp = rf.find_sub_device(:short_name => "Lamp Off")
+  next unless lamp
+  rf.actuate(lamp.data)
+end
 
-# Subscribe to a device's data feed. Optionally `overwrite`s an existing callback `url`
-puts device.subscribe("2712BB000674_0_0_1000",'http://requestb.in/13ozq1w1')
-
-# Unubscribe from a device's data feed.
-puts device.unsubscribe("2712BB000674_0_0_1000")
-
-# Return the historical data for the specified device.
-puts device.data("2712BB000674_2_0_8", Chronic.parse('yesterday').to_i, Chronic.parse('today').to_i)
-
-# Fetch any historical data about this device. Optionally specify the period's `start` and `end` timestamp.
-puts device.last_heartbeat("2712BB000674_2_0_8")
+# =============
+# = REFERENCE =
+# =============
 
 
-#Fetch a user's profile anyformation
-puts user.info()
+# DEVICES
+# =======
 
-# Fetch a user's activity stream
-puts user.stream()
+# List all devices.
+devices = NinjaBlocks::Device.list
 
-# Fetch a user's pusher channel
-puts user.pusher_channel
+# Get all devices matching a particular type.
+light_devices = NinjaBlocks::Device.list(:device_type => 'rgbled8')
+temp_devices  = NinjaBlocks::Device.list(:device_type => 'temperature')
+
+# Or a particular tag.
+led_devices = NinjaBlocks::Device.list(:tag => 'led')
+
+# Or just get the first device that meets the criteria.
+eyes = NinjaBlocks::Device.find(:device_type => 'rgbled')
+temp = NinjaBlocks::Device.find(:device_type => 'temperature')
+
+# You can also instantiate a device by its GUID.
+some_device = NinjaBlocks::Device.new("2712BB000674_0_0_1000")
+
+# Send `command` to a device.
+eyes.actuate('FFFFFF')
+
+# Subscribe to a device's data feed.
+temp.subscribe('http://requestb.in/1ksfmej1')
+
+# Unsubscribe from a device's data feed.
+temp.unsubscribe
+
+# Return the historical data for the device.
+pp device.data(:from => '2 hours ago', :to => 'now', :interval => '1min')
+
+# Fetch the most recent data for the device.
+pp device.last_heartbeat
+
+
+# USERS
+# =====
+
+user = NinjaBlocks::User.new
+
+# Fetch a user's profile anyformation.
+user.info
+
+# Fetch a user's activity stream.
+user.stream
+
+# Fetch a user's pusher channel.
+user.pusher_channel
+
+
